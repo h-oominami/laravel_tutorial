@@ -43,6 +43,12 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        /*バリデーション追加*/
+        $this->validate($request, [
+            'title' => 'required|max:30',
+            'content' => 'required|min:4'
+        ]);
+        /**/
         $post = Post::create($request->all());
         $post->save();
         return redirect()->route('posts.index');
@@ -88,6 +94,12 @@ class PostsController extends Controller
     // public function update(Request $request, Post $post)
     public function update(Request $request, Post $post)
     {
+        /*バリデーション追加*/
+        $this->validate($request, [
+            'title' => 'required|max:30',
+            'content' => 'required|min:4'
+        ]);
+        /**/
         $post->update($request->all());
         return redirect()->route('posts.index');
     }
