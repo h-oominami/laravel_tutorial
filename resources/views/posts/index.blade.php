@@ -4,6 +4,19 @@
 <html>
   <body>
     <h2>記事一覧</h2>
+    <!-- 検索窓の追加 -->
+    {{ Form::open(['action' => 'PostsController@search', 'method' => 'get']) }}
+      <div>
+      ワード検索{{Form::text('words')}}
+      </div>
+      {{ Form::submit('検索') }}
+      <div>
+      作成日範囲検索{{ Form::text('from_date') }} - {{ Form::text('to_date') }}
+      </div>
+      {{ Form::submit('検索') }}
+    {{ Form::close() }}
+    <!-- -->
+
       <th>タイトル</th><br>
       @foreach ($posts as $post)
         <tr>

@@ -66,7 +66,6 @@ class PostsController extends Controller
     {
         $post = Post::find($id);
         return view('posts.show')->with('post', $post);
-        //return view('posts.show', compact('post'));
     }
 
     /**
@@ -116,5 +115,39 @@ class PostsController extends Controller
     {
         $post->delete();
         return redirect()->route('posts.index');
+    }
+
+    /**
+     * 記事検索
+     */
+    public function search(Request $request)
+    //{
+        /* 検索キーワードの授受 */
+        //$words = $request->input('words');
+        //$from_date = $request->input('from_date');
+        //$to_date = $request->input('to_date');
+        /* titleとcontentの検索*/
+        //$posts = Post::where('title', 'like', '%' .$words. '%')
+        //    ->orwhere('content', 'like', '%' .$words. '%')
+        //    ->wherebetween('created_at', [$from_date, $to_date])->get();
+        //    dd($request);
+    {
+        $words = $request->input('words');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        
+        //検索ワードが入力されていたら、ワード検索を実行する
+        if ($words != null) {
+            $posts = Post::where(function ($query) use ($words) {
+            $query->where('title', 'like', '%' .$words. '%')
+                ->orWhere('content', 'like', '%' .$words. '%');})->get();
+        //日付が入力されていたら、日付範囲検索を実行する
+        }else if ($from_date != null && $to_date != null) {
+            $posts = Post::wherebetween('created_at', [$from_date, $to_date])->get();
+        //何も入力されていなければ、テーブル全体を取得
+        } else {
+            $posts = Post::all();
+        }
+        return view('posts.index', [ "posts" => $posts ]);
     }
 }
