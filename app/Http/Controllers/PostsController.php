@@ -51,6 +51,9 @@ class PostsController extends Controller
         /**/
         $post = Post::create($request->all());
         $post->save();
+        /* FlashMessage追加*/
+        \Session::flash('flash_message', '記事を登録しました。');
+        /**/
         return redirect()->route('posts.index');
     }
 
@@ -88,7 +91,7 @@ class PostsController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      * 
-     * 編集記事登録
+     * 記事更新
      */
     // public function update(Request $request, Post $post)
     public function update(Request $request, Post $post)
@@ -100,6 +103,9 @@ class PostsController extends Controller
         ]);
         /**/
         $post->update($request->all());
+        /* FlashMessage追加*/
+        \Session::flash('flash_message', '記事を更新しました。');
+        /**/
         return redirect()->route('posts.index');
     }
 
@@ -114,6 +120,9 @@ class PostsController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        /* FlashMessage追加*/
+        \Session::flash('flash_message', '記事を削除しました。');
+        /**/
         return redirect()->route('posts.index');
     }
 
@@ -121,16 +130,6 @@ class PostsController extends Controller
      * 記事検索
      */
     public function search(Request $request)
-    //{
-        /* 検索キーワードの授受 */
-        //$words = $request->input('words');
-        //$from_date = $request->input('from_date');
-        //$to_date = $request->input('to_date');
-        /* titleとcontentの検索*/
-        //$posts = Post::where('title', 'like', '%' .$words. '%')
-        //    ->orwhere('content', 'like', '%' .$words. '%')
-        //    ->wherebetween('created_at', [$from_date, $to_date])->get();
-        //    dd($request);
     {
         $words = $request->input('words');
         $from_date = $request->input('from_date');

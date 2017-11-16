@@ -3,6 +3,11 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <!-- FlashMassageの追加 -->
+    @if (Session::has('flash_message'))
+      {{ Session::get('flash_message') }}
+    @endif
+    <!-- -->
     <h2>記事一覧</h2>
     <!-- 検索窓の追加 -->
     {{ Form::open(['action' => 'PostsController@search', 'method' => 'get']) }}
