@@ -31,13 +31,14 @@
             </button><br>
         </tr>
       @endforeach
+      <!-- ページャー追加 -->
+      {{ $posts->links() }} 
+      <!-- -->
       <br><a href="{{ action('PostsController@create')}}">記事作成画面へ</a>        
-
       <!-- logout -->
       <ul class="nav navbar-nav navbar-right">
-        <a href="{{ route('logout') }}"
-        onclick="event.preventDefault();
-        document.getElementById('logout-form').submit();">Logout</a>
+        <a href="{{ route('logout') }}"onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();">ログアウト</a>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
           {{ csrf_field() }}
         </form>
