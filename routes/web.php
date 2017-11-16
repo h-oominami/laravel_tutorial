@@ -10,15 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-//下の書き方では、どうもうまくいかなかった
-//Route::resource('posts', 'PostsController');
-//Route::get('/', 'PostsController@index');             //一覧表示画面
-//Route::get('/posts', 'PostsController@show');  //詳細表示画面
-//Route::get('post/create', 'PostsController@create');  //新規作成画面
-//Route::DELETE('posts/{post}', 'PostsController@destroy');   //削除機能
-
-Route::get('/', 'PostsController@index')->name('posts.index');
+/* login */
+Auth::routes();
+Route::get('/', 'HomeController@index')->name('home');
+/**/
+Route::get('posts', 'PostsController@index')->name('posts.index');
 Route::post('posts', 'PostsController@store')->name('posts.store');
 Route::get('posts/create', 'PostsController@create')->name('posts.create');
 Route::get('posts/search', 'PostsController@search')->name('posts.search');
