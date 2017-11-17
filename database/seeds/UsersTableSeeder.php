@@ -12,15 +12,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        /* test ++ */
+        /* 11/15ダミー記事生成 */
+        $faker = Faker\Factory::create();
+
+        for($i=0; $i<10; $i++){
         DB::table('posts')->insert([
-          //  'id' => 1,
-            'title' => 'test',
-            'content' => 'test_content',
+            'title' => $faker->word,
+            'content' => $faker->text,
+            'created_at' => '2017-11-15 11:04:32',
+            'updated_at' => '2017-11-15 11:04:32',
         ]);
-        
-        //factory(App\User::class, 3)->create();
-        factory(App\Post::class, 3)->create();
+        }
         /**/
     }
 }

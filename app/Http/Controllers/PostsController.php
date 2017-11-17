@@ -16,7 +16,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::Paginate(5);
+        /* paginate追加 */
+        $posts = Post::Paginate(20);
+        /**/
         return view('posts.index', [ "posts" => $posts ]);
     }
 
@@ -135,11 +137,22 @@ class PostsController extends Controller
         $from_date = $request->from_date;
         $to_date = $request->to_date;
 
+        /* 検索ワードの入力＆日付範囲指定されていたら、日付の指定範囲でワード検索を追加 */
+        if ($words != null && $from_date != null && $to_date != null) { 
+            $posts = Post::where(function ($query) use ($words) {
+                $query->where('title', 'like', '%' .$words. '%')
+                    ->orWhere('content', 'like', '%' .$words. '%');
+            })->wherebetween('created_at', [$from_date, $to_date])->Paginate(20);
+        /**/
         //検索ワードが入力されていたら、ワード検索を実行する
-        if ($words != null) {
+        }else if ($words != null && $from_date == null && $to_date == null) {
             $posts = Post::where(function ($query) use ($words) {
             $query->where('title', 'like', '%' .$words. '%')
-                ->orWhere('content', 'like', '%' .$words. '%');})->Paginate(20);
+                ->orWhere('content', 'like', '%' .$words. '%')
+                /* 作成日による検索を追加 */
+                ->orWhere('created_at', 'like', '%' .$words. '%')
+                /**/
+                ;})->Paginate(20);
         //日付が入力されていたら、日付範囲検索を実行する
         }else if ($from_date != null && $to_date != null) {
             $posts = Post::wherebetween('created_at', [$from_date, $to_date])->Paginate(20);

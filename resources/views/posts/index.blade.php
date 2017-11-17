@@ -14,7 +14,6 @@
       <div>
         ワード検索{{Form::text('words')}}
       </div>
-        {{ Form::submit('検索') }}
       <div>
         作成日範囲検索{{ Form::text('from_date') }} - {{ Form::text('to_date') }}
       </div>
