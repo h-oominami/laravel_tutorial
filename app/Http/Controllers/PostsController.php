@@ -16,7 +16,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::simplePaginate(20);
+        $posts = Post::Paginate(5);
         return view('posts.index', [ "posts" => $posts ]);
     }
 
@@ -131,21 +131,21 @@ class PostsController extends Controller
      */
     public function search(Request $request)
     {
-        $words = $request->input('words');
-        $from_date = $request->input('from_date');
-        $to_date = $request->input('to_date');
-        
+        $words = $request->words;
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+
         //検索ワードが入力されていたら、ワード検索を実行する
         if ($words != null) {
             $posts = Post::where(function ($query) use ($words) {
             $query->where('title', 'like', '%' .$words. '%')
-                ->orWhere('content', 'like', '%' .$words. '%');})->get();
+                ->orWhere('content', 'like', '%' .$words. '%');})->Paginate(20);
         //日付が入力されていたら、日付範囲検索を実行する
         }else if ($from_date != null && $to_date != null) {
-            $posts = Post::wherebetween('created_at', [$from_date, $to_date])->get();
+            $posts = Post::wherebetween('created_at', [$from_date, $to_date])->Paginate(20);
         //何も入力されていなければ、テーブル全体を取得
         } else {
-            $posts = Post::all();
+            $posts = Post::Paginate(20);
         }
         return view('posts.index', [ "posts" => $posts ]);
     }

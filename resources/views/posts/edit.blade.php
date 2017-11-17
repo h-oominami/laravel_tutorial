@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8">
     <title>記事編集</title>
-    </head>
+  </head>
       <body>
         <h2>Editing</h2>
           {{ Form::open(['route' => ['posts.update', $post->id], 'method' => 'put']) }}

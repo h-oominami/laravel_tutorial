@@ -12,11 +12,11 @@
     <!-- 検索窓の追加 -->
     {{ Form::open(['action' => 'PostsController@search', 'method' => 'get']) }}
       <div>
-      ワード検索{{Form::text('words')}}
+        ワード検索{{Form::text('words')}}
       </div>
-      {{ Form::submit('検索') }}
+        {{ Form::submit('検索') }}
       <div>
-      作成日範囲検索{{ Form::text('from_date') }} - {{ Form::text('to_date') }}
+        作成日範囲検索{{ Form::text('from_date') }} - {{ Form::text('to_date') }}
       </div>
       {{ Form::submit('検索') }}
     {{ Form::close() }}
@@ -32,7 +32,7 @@
         </tr>
       @endforeach
       <!-- ページャー追加 -->
-      {{ $posts->links() }} 
+      {{ $posts->links() }}
       <!-- -->
       <br><a href="{{ action('PostsController@create')}}">記事作成画面へ</a>        
       <!-- logout -->
