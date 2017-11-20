@@ -5,8 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /* 定数定義 */
-define('MAX', 30);      /* バリデーション(max) */
-define('MIN', 4);       /* バリデーション(min) */
+define('MAX', 30);
+define('MIN', 4);
 /**/
 
 class UserRequest extends FormRequest
