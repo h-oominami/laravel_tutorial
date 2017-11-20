@@ -4,11 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/* 定数定義 */
-define('MAX', 30);
-define('MIN', 4);
-/**/
-
 class UserRequest extends FormRequest
 {
     /**
@@ -29,8 +24,8 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:MAX',
-            'content' => 'required|min:MIN'
+            'title' => 'required|max:30',
+            'content' => 'required|min:4'
         ];
     }
 }
