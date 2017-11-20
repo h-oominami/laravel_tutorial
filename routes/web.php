@@ -13,7 +13,7 @@
 Route::get('/', 'PostsController@index')->name('posts.index');//一覧表示画面
 Route::post('posts', 'PostsController@store')->name('posts.store')->middleware('auth');//記事登録
 Route::get('posts/create', 'PostsController@create')->name('posts.create')->middleware('auth');//新規作成画面
-Route::get('posts/search', 'PostsController@search')->name('posts.search');//検索
+Route::get('posts/search', 'PostsController@index')->name('posts.index');//検索
 Route::get('posts/{post}', 'PostsController@show')->name('posts.show');//記事詳細画面
 Route::put('posts/{post}', 'PostsController@update')->name('posts.update')->middleware('auth');//記事更新
 Route::delete('posts/{post}', 'PostsController@destroy')->name('posts.destroy')->middleware('auth');//記事削除

@@ -6,10 +6,6 @@ use App\Post;
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 
-/* 定数定義 */
-define('P_NUM', 20);    /* paginate         */
-/**/
-
 class PostsController extends Controller
 {
     /**
@@ -19,11 +15,29 @@ class PostsController extends Controller
      * 
      * 記事一覧表示
      */
-    public function index()
+    public function index(Request $request)
     {
-        /* paginate追加 */
-        $posts = Post::Paginate(P_NUM);
-        /**/
+        define('P_NUM', 20);
+
+        $query = Post::query();
+        /*検索開始日(from_date)設定*/
+        if($request->from_date){
+            $query -> where('created_at', '>', $request->from_date);
+        }
+        /*検索終了日(to_date)設定*/
+        if($request->to_date){
+            $query -> where('created_at', '<', $request->to_date);
+        }
+        /*検索単語(word)設定*/
+        if($request->words){
+            $ary_word = preg_split('/[\s|　]+/', $request->words);
+            foreach( $ary_word as $word ){
+                $query -> where('title','LIKE','%'.$word.'%')
+                    -> orwhere('title','LIKE','%'.$word.'%');
+            }
+        }
+        /*pager設定*/
+        $posts = $query->paginate(P_NUM);
         return view('posts.index', [ "posts" => $posts ]);
     }
 
@@ -119,32 +133,5 @@ class PostsController extends Controller
         \Session::flash('flash_message', '記事を削除しました。');
         /**/
         return redirect()->route('posts.index');
-    }
-
-    /**
-     * 記事検索
-     */
-    public function search(Request $request)
-    {
-        $query = Post::query();
-        /*検索開始日(from_date)設定*/
-        if($request->from_date){
-            $query -> where('created_at', '>', $request->from_date);
-        }
-        /*検索終了日(to_date)設定*/
-        if($request->to_date){
-            $query -> where('created_at', '<', $request->to_date);
-        }
-        /*検索単語(word)設定*/
-        if($request->words){
-            $ary_word = preg_split('/[\s|　]+/', $request->words);
-            foreach( $ary_word as $word ){
-                $query -> where('title','LIKE','%'.$word.'%')
-                    -> orwhere('title','LIKE','%'.$word.'%');
-            }
-        }
-        /*pager設定*/
-        $posts = $query->paginate(P_NUM);
-        return view('posts.index', [ "posts" => $posts ]);
     }
 }

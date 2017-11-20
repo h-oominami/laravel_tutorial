@@ -10,7 +10,7 @@
     <!-- -->
     <h2>記事一覧</h2>
     <!-- 検索窓の追加 -->
-    {{ Form::open(['action' => 'PostsController@search', 'method' => 'get']) }}
+    {{ Form::open(['action' => 'PostsController@index', 'method' => 'get']) }}
       <div>
         ワード検索{{Form::text('words')}}
       </div>
