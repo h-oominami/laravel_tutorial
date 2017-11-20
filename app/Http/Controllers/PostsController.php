@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 
+/* 定数定義 */
+define('MAX', 30);      /* バリデーション(max) */
+define('MIN', 4);       /* バリデーション(min) */
+define('P_NUM', 20);    /* paginate         */
+/**/
+
 class PostsController extends Controller
 {
     /**
@@ -17,7 +23,7 @@ class PostsController extends Controller
     public function index()
     {
         /* paginate追加 */
-        $posts = Post::Paginate(20);
+        $posts = Post::Paginate(P_NUM);
         /**/
         return view('posts.index', [ "posts" => $posts ]);
     }
@@ -47,8 +53,8 @@ class PostsController extends Controller
     {
         /*バリデーション追加*/
         $this->validate($request, [
-            'title' => 'required|max:30',
-            'content' => 'required|min:4'
+            'title' => 'required|max:MAX',
+            'content' => 'required|min:MIN'
         ]);
         /**/
         $post = Post::create($request->all());
@@ -100,8 +106,8 @@ class PostsController extends Controller
     {
         /*バリデーション追加*/
         $this->validate($request, [
-            'title' => 'required|max:30',
-            'content' => 'required|min:4'
+            'title' => 'required|max:MAX',
+            'content' => 'required|min:MIN'
         ]);
         /**/
         $post->update($request->all());
@@ -151,7 +157,7 @@ class PostsController extends Controller
             }
         }
         /*pager設定*/
-        $posts = $query->paginate(20);
+        $posts = $query->paginate(P_NUM);
         return view('posts.index', [ "posts" => $posts ]);
     }
 }
