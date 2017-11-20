@@ -133,33 +133,25 @@ class PostsController extends Controller
      */
     public function search(Request $request)
     {
-        $words = $request->words;
-        $from_date = $request->from_date;
-        $to_date = $request->to_date;
-
-        /* 検索ワードの入力＆日付範囲指定されていたら、日付の指定範囲でワード検索を追加 */
-        if ($words != null && $from_date != null && $to_date != null) { 
-            $posts = Post::where(function ($query) use ($words) {
-                $query->where('title', 'like', '%' .$words. '%')
-                    ->orWhere('content', 'like', '%' .$words. '%');
-            })->wherebetween('created_at', [$from_date, $to_date])->Paginate(20);
-        /**/
-        //検索ワードが入力されていたら、ワード検索を実行する
-        }else if ($words != null && $from_date == null && $to_date == null) {
-            $posts = Post::where(function ($query) use ($words) {
-            $query->where('title', 'like', '%' .$words. '%')
-                ->orWhere('content', 'like', '%' .$words. '%')
-                /* 作成日による検索を追加 */
-                ->orWhere('created_at', 'like', '%' .$words. '%')
-                /**/
-                ;})->Paginate(20);
-        //日付が入力されていたら、日付範囲検索を実行する
-        }else if ($from_date != null && $to_date != null) {
-            $posts = Post::wherebetween('created_at', [$from_date, $to_date])->Paginate(20);
-        //何も入力されていなければ、テーブル全体を取得
-        } else {
-            $posts = Post::Paginate(20);
+        $query = Post::query();
+        /*検索開始日(from_date)設定*/
+        if($request->from_date){
+            $query -> where('created_at', '>', $request->from_date);
         }
+        /*検索終了日(to_date)設定*/
+        if($request->to_date){
+            $query -> where('created_at', '<', $request->to_date);
+        }
+        /*検索単語(word)設定*/
+        if($request->words){
+            $ary_word = preg_split('/[\s|　]+/', $request->words);
+            foreach( $ary_word as $word ){
+                $query -> where('title','LIKE','%'.$word.'%')
+                    -> orwhere('title','LIKE','%'.$word.'%');
+            }
+        }
+        /*pager設定*/
+        $posts = $query->paginate(20);
         return view('posts.index', [ "posts" => $posts ]);
     }
 }
