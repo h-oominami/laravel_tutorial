@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 
 /* 定数定義 */
-define('MAX', 30);      /* バリデーション(max) */
-define('MIN', 4);       /* バリデーション(min) */
 define('P_NUM', 20);    /* paginate         */
 /**/
 
@@ -49,14 +48,8 @@ class PostsController extends Controller
      * 
      * 新規記事登録
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        /*バリデーション追加*/
-        $this->validate($request, [
-            'title' => 'required|max:MAX',
-            'content' => 'required|min:MIN'
-        ]);
-        /**/
         $post = Post::create($request->all());
         $post->save();
         /* FlashMessage追加*/
@@ -102,14 +95,8 @@ class PostsController extends Controller
      * 記事更新
      */
     // public function update(Request $request, Post $post)
-    public function update(Request $request, Post $post)
+    public function update(UserRequest $request, Post $post)
     {
-        /*バリデーション追加*/
-        $this->validate($request, [
-            'title' => 'required|max:MAX',
-            'content' => 'required|min:MIN'
-        ]);
-        /**/
         $post->update($request->all());
         /* FlashMessage追加*/
         \Session::flash('flash_message', '記事を更新しました。');
