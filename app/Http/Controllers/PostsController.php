@@ -19,15 +19,15 @@ class PostsController extends Controller
     {
         $query = Post::query();
         /*検索開始日(from_date)設定*/
-        if($request->from_date){
+        if ($request->from_date) {
             $query -> where('created_at', '>', $request->from_date);
         }
         /*検索終了日(to_date)設定*/
-        if($request->to_date){
+        if ($request->to_date) {
             $query -> where('created_at', '<', $request->to_date);
         }
         /*検索単語(word)設定*/
-        if($request->words){
+        if ($request->words) {
             $ary_word = preg_split('/[\s|　]+/', $request->words);
             foreach( $ary_word as $word ){
                 $query -> where('title','LIKE','%'.$word.'%')
