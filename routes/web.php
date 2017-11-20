@@ -21,4 +21,3 @@ Route::get('posts/{post}/edit', 'PostsController@edit')->name('posts.edit')->mid
 /* login */
 Auth::routes();
 /**/
-?>

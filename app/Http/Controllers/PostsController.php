@@ -17,8 +17,6 @@ class PostsController extends Controller
      */
     public function index(Request $request)
     {
-        define('P_NUM', 20);
-
         $query = Post::query();
         /*検索開始日(from_date)設定*/
         if($request->from_date){
@@ -37,7 +35,7 @@ class PostsController extends Controller
             }
         }
         /*pager設定*/
-        $posts = $query->paginate(P_NUM);
+        $posts = $query->paginate(20);
         return view('posts.index', [ "posts" => $posts ]);
     }
 
